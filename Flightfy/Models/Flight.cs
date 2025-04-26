@@ -1,6 +1,6 @@
 namespace Flightfy.Models;
 
-public class Flight : TravelItem
+public class Flight : TravelItem, IReservable
 {
     protected String airline;
     protected String origin;
@@ -15,5 +15,20 @@ public class Flight : TravelItem
          this.destination = destination;
          this.flightNumber = flightNumber;
          this.reservationNumber = reservationNumber;
+    }
+
+    public void Reserve()
+    {
+        Console.WriteLine("Reserving Flight");
+    }
+
+    public void Cancel()
+    {
+        Console.WriteLine("Canceling Flight");
+    }
+
+    public override string ToString()
+    {
+        return $"Airline: {airline}, Origin: {origin}, Destination: {destination}, FlightNumber: {flightNumber}";
     }
 }

@@ -14,4 +14,6 @@ public abstract class TravelItem
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public abstract override string ToString();
 }

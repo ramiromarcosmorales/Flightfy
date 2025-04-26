@@ -1,6 +1,6 @@
 namespace Flightfy.Models;
 
-public class Acommodation : TravelItem
+public class Acommodation : TravelItem, IReservable
 {
     protected String type;
     protected String address;
@@ -11,5 +11,20 @@ public class Acommodation : TravelItem
         this.type = type;
         this.address = address;
         this.reservationNumber = reservationNumber;
+    }
+
+    public void Reserve()
+    {
+        Console.WriteLine("Reserving Acommodation");
+    }
+
+    public void Cancel()
+    {
+        Console.WriteLine("Canceling Acommodation");
+    }
+
+    public override string ToString()
+    {
+        return $"Type: {type}, Address: {address}, Reservation Number: {reservationNumber}";
     }
 }

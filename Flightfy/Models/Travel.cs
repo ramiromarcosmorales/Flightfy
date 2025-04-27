@@ -6,5 +6,19 @@ public class Travel
     private String destination;
     private DateOnly startDate;
     private DateOnly endDate;
-    private List<TravelItem> items; // modificar el tipo de dato cuando cree la clase Item
+    private List<TravelItem> items;
+
+    public Travel(String title, String destination, DateOnly startDate, DateOnly endDate)
+    {
+        this.title = title;
+        this.destination = destination;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public void addItem(TravelItem item)
+    {
+        items.Add(item);
+    }
+    
 }

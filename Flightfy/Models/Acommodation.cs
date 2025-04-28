@@ -4,13 +4,17 @@ public class Acommodation : TravelItem, IReservable
 {
     protected String type;
     protected String address;
-    protected String reservationNumber;
     
-    public Acommodation (String name, String description, DateOnly startDate, DateOnly endDate, String type, String address, String reservationNumber) : base(name, description, startDate, endDate)
+    public Acommodation (String name, String description, DateOnly startDate, DateOnly endDate, String type, String address, String reservationNumber) : base(name, description, startDate, endDate, reservationNumber)
     {
         this.type = type;
         this.address = address;
         this.reservationNumber = reservationNumber;
+    }
+
+    public static Acommodation createAcommodation(String name, String description, DateOnly startDate, DateOnly endDate, String type, String address, String reservationNumber)
+    {
+        return new Acommodation(name, description, startDate, endDate, type, address, reservationNumber);
     }
 
     public void Reserve()

@@ -7,11 +7,16 @@ public class Activity : TravelItem, IReservable
     protected String notes;
     
     
-    public Activity(String name, String description, DateOnly startDate, DateOnly endDate, String type, String address, String notes) : base(name, description, startDate, endDate)
+    public Activity(String name, String description, DateOnly startDate, DateOnly endDate, String type, String address, String notes, String reservationNumber) : base(name, description, startDate, endDate, reservationNumber)
     {
         this.type = type;
         this.address = address;
         this.notes = notes;
+        this.reservationNumber = reservationNumber;
+    }
+    public static Activity createActivity(String name, String description, DateOnly startDate, DateOnly endDate, String type, String address, String notes, String reservationNumber)
+    {
+        return new Activity(name, description, startDate, endDate, type, address, notes, reservationNumber);
     }
 
     public void Reserve()
@@ -21,7 +26,7 @@ public class Activity : TravelItem, IReservable
 
     public void Cancel()
     {
-        Console.WriteLine("Canceling Flight");
+        Console.WriteLine("Canceling Activty");
     }
 
     public override string ToString()

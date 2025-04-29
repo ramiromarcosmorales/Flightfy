@@ -14,7 +14,7 @@ public class Travel
         this.destination = destination;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.items = new List<TravelItem>();
+        items = new List<TravelItem>();
     }
 
     public static Travel CreateTravel(String title, String destination, DateOnly startDate, DateOnly endDate)
@@ -36,7 +36,7 @@ public class Travel
 
         if (items.Count > 0)
         {
-            result += "Items: " + items;
+            result += "Items: " + string.Join("; ", items.Select(i => i.ToString()));
         } else
         {
             result += "No items added.";

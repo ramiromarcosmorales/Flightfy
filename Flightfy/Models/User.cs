@@ -35,19 +35,22 @@ public class User
         Console.WriteLine("Ingrese fecha de inicio del viaje (yyyy-mm-dd)");
         while (!DateOnly.TryParse(Console.ReadLine(), out startDate))
         {
-            Console.WriteLine("Ingresaste una fecha inválida! Vuelve a intentar:");
+            Console.WriteLine("Ingresaste una fecha invalida! Vuelve a intentar:");
         }
 
         DateOnly endDate;
         Console.WriteLine("Ingrese fecha de fin del viaje (yyyy-mm-dd)");
         while (!DateOnly.TryParse(Console.ReadLine(), out endDate))
         {
-            Console.WriteLine("Ingresaste una fecha inválida! Vuelve a intentar:");
+            Console.WriteLine("Ingresaste una fecha invalida! Vuelve a intentar:");
         }
 
         travel = Travel.CreateTravel(title, destination, startDate, endDate);
         return travel;
     }
+    
+    /* La clase Usuario no debería tener tantas responsabilidades, más adelante se va a simplificar la función de administrar el
+       viaje mediante otras clases. */
 
     public void ManageTravel()
     {
@@ -58,7 +61,7 @@ public class User
             Console.WriteLine($"Added: {item.ToString()}");
         };
 
-        Console.WriteLine("Ingrese a continuación una opción:");
+        Console.WriteLine("Ingrese a continuacion una opcion:");
         Console.WriteLine("1 - Agregar Vuelo");
         Console.WriteLine("2 - Agregar Alojamiento");
         Console.WriteLine("3 - Agregar Actividad");
@@ -79,7 +82,7 @@ public class User
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("Ingrese un número entero válido!");
+                    Console.WriteLine("Ingrese un numero entero valido!");
                 }
             }
 
@@ -103,7 +106,7 @@ public class User
                     string destination = Console.ReadLine();
 
 
-                    Console.WriteLine("Ingrese número de Vuelo:");
+                    Console.WriteLine("Ingrese numero de Vuelo:");
                     string flightNumber = Console.ReadLine();
 
                     Flight flight = Flight.createFlight(basicData.name, basicData.description, basicData.startDate, basicData.endDate, airline, origin, destination, flightNumber, basicData.reservationNumber);
@@ -116,7 +119,7 @@ public class User
                     Console.WriteLine("Ingrese un tipo de alojamiento:");
                     string acommodationType = Console.ReadLine();
 
-                    Console.WriteLine("Ingrese la dirección:");
+                    Console.WriteLine("Ingrese la direccion:");
                     string accommodationAddress = Console.ReadLine();
 
                     Acommodation accommodation = Acommodation.createAcommodation(basicData.name, basicData.description, basicData.startDate, basicData.endDate, acommodationType, accommodationAddress, basicData.reservationNumber);
@@ -129,7 +132,7 @@ public class User
                     Console.WriteLine("Ingrese un tipo ");
                     string activityType = Console.ReadLine();
 
-                    Console.WriteLine("Ingrese la dirección:");
+                    Console.WriteLine("Ingrese la direccion:");
                     string activityAddress = Console.ReadLine();
 
                     Console.WriteLine("Ingrese notas:");
@@ -145,16 +148,11 @@ public class User
                     Console.WriteLine("Gracias por usar el sistema!");
                     return;
                 default:
-                    Console.WriteLine("Opción Invalida");
+                    Console.WriteLine("Opcion Invalida");
                     break;
             }
             
         }
-    }
-
-    private void Travel_OnItemAdded(TravelItem item)
-    {
-        throw new NotImplementedException();
     }
 
     private (string name, string description, DateOnly startDate, DateOnly endDate, string reservationNumber) itemDataEntry()
@@ -162,24 +160,24 @@ public class User
         Console.WriteLine("Ingrese el nombre:");
         string name = Console.ReadLine();
 
-        Console.WriteLine("Ingrese la descripción");
+        Console.WriteLine("Ingrese la descripcion");
         string description = Console.ReadLine();
 
         DateOnly startDate;
         Console.WriteLine("Ingrese fecha de inicio (yyyy-mm-dd)");
         while (!DateOnly.TryParse(Console.ReadLine(), out startDate))
         {
-            Console.WriteLine("Ingresaste una fecha inválida! Vuelve a intentar:");
+            Console.WriteLine("Ingresaste una fecha invalida! Vuelve a intentar:");
         }
 
         DateOnly endDate;
         Console.WriteLine("Ingrese fecha de fin (yyyy-mm-dd)");
         while (!DateOnly.TryParse(Console.ReadLine(), out endDate))
         {
-            Console.WriteLine("Ingresaste una fecha inválida! Vuelve a intentar:");
+            Console.WriteLine("Ingresaste una fecha invalida! Vuelve a intentar:");
         }
 
-        Console.WriteLine("Ingrese el número de reserva:");
+        Console.WriteLine("Ingrese el numero de reserva:");
         string reservationNumber = Console.ReadLine();
 
         return (name, description, startDate, endDate, reservationNumber);

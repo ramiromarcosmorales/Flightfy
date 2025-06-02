@@ -6,6 +6,7 @@ public class Flight : TravelItem, IReservable
     protected String origin;
     protected String destination;
     protected String flightNumber;
+    protected User[] seats = new User[80]; // Array para asientos.
         
     protected Flight(String name, String description, DateOnly startDate, DateOnly endDate, String airline, String origin, String destination, String flightNumber, String reservationNumber) : base(name, description, startDate, endDate, reservationNumber)
     {
@@ -30,6 +31,28 @@ public class Flight : TravelItem, IReservable
     public void Cancel()
     {
         Console.WriteLine("Canceling Flight");
+    }
+
+    // Implementacon de Metodos que reciben como parametro indice para hacer uso del Array.
+    public bool AssignSeat(int seat, User pax)
+    {
+        if (seat >= 0 && seat < seats.Length)
+        {
+            seats[seat] = pax; // Asignar el nombre del usuario al asiento.
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+    
+    public User GetSeat(int seat)
+    {
+        if (seat >= 0 && seat < seats.Length)
+        {
+            return seats[seat]; // Retorna el usuario asignado al asiento.
+        }
+        throw new IndexOutOfRangeException("Indice de asiento inválido!");
     }
 
     public override string ToString()

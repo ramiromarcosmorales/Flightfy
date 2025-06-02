@@ -48,7 +48,18 @@ public class User
         travel = Travel.CreateTravel(title, destination, startDate, endDate);
         return travel;
     }
-    
+
+    public Travel? CreateTravelParaments(string title, string destination, DateOnly startDate, DateOnly endDate)
+    {
+        if (HasActiveTravel)
+        {
+            return null;
+        }
+
+        travel = Travel.CreateTravel(title, destination, startDate, endDate);
+        return travel;
+    }
+
     /* La clase Usuario no debería tener tantas responsabilidades, más adelante se va a simplificar la función de administrar el
        viaje mediante otras clases. */
 
@@ -66,7 +77,9 @@ public class User
         Console.WriteLine("2 - Agregar Alojamiento");
         Console.WriteLine("3 - Agregar Actividad");
         Console.WriteLine("4 - Imprimir detalles del Viaje");
-        Console.WriteLine("5 - Salir");
+        Console.WriteLine("5 - Eliminar item");
+        Console.WriteLine("6 - Busqueda via numero de reserva");
+        Console.WriteLine("7 - Salir");
 
 
         while (true)
@@ -110,7 +123,7 @@ public class User
                     string flightNumber = Console.ReadLine();
 
                     Flight flight = Flight.createFlight(basicData.name, basicData.description, basicData.startDate, basicData.endDate, airline, origin, destination, flightNumber, basicData.reservationNumber);
-                    travel.addItem(flight);
+                    travel.AddItem(flight);
                     break;
                 case 2:
                     Console.WriteLine("Agregar alojamiento");
@@ -123,13 +136,13 @@ public class User
                     string accommodationAddress = Console.ReadLine();
 
                     Acommodation accommodation = Acommodation.createAcommodation(basicData.name, basicData.description, basicData.startDate, basicData.endDate, acommodationType, accommodationAddress, basicData.reservationNumber);
-                    travel.addItem(accommodation);
+                    travel.AddItem(accommodation);
                     break;
                 case 3:
                     Console.WriteLine("Agregar actividad");
                     basicData = itemDataEntry();
 
-                    Console.WriteLine("Ingrese un tipo ");
+                    Console.WriteLine("Ingrese un tipo de actividad");
                     string activityType = Console.ReadLine();
 
                     Console.WriteLine("Ingrese la direccion:");
@@ -139,12 +152,21 @@ public class User
                     string notes = Console.ReadLine();
 
                     Activity activity = Activity.createActivity(basicData.name, basicData.description, basicData.startDate, basicData.endDate, activityType, activityAddress, notes, basicData.reservationNumber);
-                    travel.addItem(activity);
+                    travel.AddItem(activity);
                     break;
                 case 4:
                     Console.WriteLine(travel);
                     break;
                 case 5:
+                    Console.WriteLine("Eliminando item de viaje...");
+                    travel.RemoveItem(0);
+                    break;
+                case 6:
+                    Console.WriteLine("Ingrese el numero de reserva del item:");
+                    string reservationNumber = Console.ReadLine();
+                    Console.WriteLine(travel.FindItemByReservationNumber(reservationNumber));
+                    break;
+                case 7:
                     Console.WriteLine("Gracias por usar el sistema!");
                     return;
                 default:

@@ -17,5 +17,15 @@ public abstract class TravelItem
         this.reservationNumber = reservationNumber;
     }
 
+    public DateOnly? getStartDate()
+    {
+        return startDate;
+    }
+
+    public String getReservationNumber()
+    {
+        return reservationNumber;
+    }
+
     public abstract override string ToString();
 }

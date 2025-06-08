@@ -1,3 +1,5 @@
+using Flightfy.Exceptions;
+
 namespace Flightfy.Models;
 
 public class Flight : TravelItem, IReservable
@@ -14,7 +16,6 @@ public class Flight : TravelItem, IReservable
          this.origin = origin;
          this.destination = destination;
          this.flightNumber = flightNumber;
-         this.reservationNumber = reservationNumber;
     }
 
     public static Flight createFlight(String name, String description, DateOnly startDate, DateOnly endDate, String airline, String origin, String destination, String flightNumber, String reservationNumber)
@@ -36,6 +37,13 @@ public class Flight : TravelItem, IReservable
     // Implementacon de Metodos que reciben como parametro indice para hacer uso del Array.
     public bool AssignSeat(int seat, User pax)
     {
+        if (pax == null) 
+            // manejo de error si el pasajero es null
+            throw new ArgumentNullException("El pasajero no puede ser NULL!");
+        
+        if (seats[seat] != null)
+            throw new TravelException("Asiento ya ocupado!", "SEAT_TAKEN");
+        
         if (seat >= 0 && seat < seats.Length)
         {
             seats[seat] = pax; // Asignar el nombre del usuario al asiento.
@@ -52,7 +60,7 @@ public class Flight : TravelItem, IReservable
         {
             return seats[seat]; // Retorna el usuario asignado al asiento.
         }
-        throw new IndexOutOfRangeException("Indice de asiento inválido!");
+        throw new IndexOutOfRangeException("Indice de asiento invalido!");
     }
 
     public override string ToString()

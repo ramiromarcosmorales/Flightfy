@@ -1,3 +1,5 @@
+using Flightfy.Exceptions;
+
 namespace Flightfy.Models;
 
 public class Travel
@@ -27,30 +29,42 @@ public class Travel
 
     public void AddItem(TravelItem item)
     {   
+        if (item == null)
+            throw new ArgumentNullException("El item no puede ser null.");
+
+        if (FindItemByReservationNumber(item.getReservationNumber()) != null)
+        {
+            throw new TravelException("Item existente!", "DUPLICATE_RESERVATION_NUMBER");
+        }
+        
         items.Add(item);
         OnItemAdded?.Invoke(item);
     }
 
 
-    // Metodos que reciben como parametro un índice para poder acceder o eliminar un item de la lista.
+    // Metodos que reciben como parametro un indice para poder acceder o eliminar un item de la lista.
     public TravelItem GetItem(int index)
     {
         if (index >= 0 && index < items.Count)
         {
             return items[index];
         }
-        throw new IndexOutOfRangeException("Indice inválido!");
+        throw new IndexOutOfRangeException("Indice invalido!");
     }
 
     public void RemoveItem(int index)
     {
-        if (index >= 0 && index < items.Count)
-        {
-            var item = items[index];
-            items.RemoveAt(index);
-            OnItemRemoved?.Invoke(item);
-        }
-
+        // Manejo para evitar el uso de RemoveItem en caso de que no haya ningun item
+        if (items.Count == 0)
+            throw new TravelException("No hay items creados!", "UNINITIALIZED_LIST");
+        
+        // Manejo de ingreso de indices invÃ¡lidos
+        if (index < 0 || index >= items.Count) 
+            throw new IndexOutOfRangeException("Indice invalido!");
+        
+        var item = items[index]; 
+        items.RemoveAt(index); 
+        OnItemRemoved?.Invoke(item);
     }
 
     // Metodo que devuelve la lista de items ordenada por fecha de inicio.

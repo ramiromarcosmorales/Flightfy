@@ -1,11 +1,18 @@
+using System.Text.Json.Serialization;
+
 namespace Flightfy.Models;
 
 public abstract class TravelItem
 {
+    [JsonInclude]
     protected String name;
+    [JsonInclude]
     protected String description;
-    protected DateOnly? startDate;
-    protected DateOnly? endDate;
+    [JsonInclude]
+    protected DateOnly startDate;
+    [JsonInclude]
+    protected DateOnly endDate;
+    [JsonInclude]
     protected String reservationNumber;
 
     protected TravelItem(String name, String description, DateOnly startDate, DateOnly endDate, String reservationNumber)
@@ -17,15 +24,11 @@ public abstract class TravelItem
         this.reservationNumber = reservationNumber;
     }
 
-    public DateOnly? getStartDate()
-    {
-        return startDate;
-    }
-
-    public String getReservationNumber()
-    {
-        return reservationNumber;
-    }
+    public string Name => name;
+    public string Description => description;
+    public DateOnly StartDate => startDate;
+    public DateOnly EndDate => endDate;
+    public String ReservationNumber => reservationNumber;
 
     public abstract override string ToString();
 }

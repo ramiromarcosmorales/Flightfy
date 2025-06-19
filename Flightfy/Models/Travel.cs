@@ -16,6 +16,8 @@ public class Travel
     [JsonInclude]
     private List<TravelItem> items; // Uso de Lista
 
+    [JsonConstructor]
+
     private Travel(String title, String destination, DateOnly startDate, DateOnly endDate)
     {
         this.title = title;
@@ -24,6 +26,12 @@ public class Travel
         this.endDate = endDate;
         items = new List<TravelItem>();
     }
+
+    public string Title => title;
+    public string Destination => destination;
+    public DateOnly StartDate => startDate;
+    public DateOnly EndDate => endDate;
+    public List<TravelItem> Items => items;
 
     public static event TravelCreateHandler OnTravelCreated;
 
@@ -34,21 +42,25 @@ public class Travel
         return travel;
     }
 
+    public static event TravelChangeHandler OnTravelChanged;
     public event TravelItemHandler OnItemAdded;
     public event TravelItemHandler OnItemRemoved;
+
 
     public void AddItem(TravelItem item)
     {   
         if (item == null)
             throw new ArgumentNullException("El item no puede ser null.");
 
-        if (FindItemByReservationNumber(item.getReservationNumber()) != null)
+        if (FindItemByReservationNumber(item.ReservationNumber) != null)
         {
             throw new TravelException("Item existente!", "DUPLICATE_RESERVATION_NUMBER");
         }
         
         items.Add(item);
         OnItemAdded?.Invoke(item);
+
+        OnTravelChanged?.Invoke(this);
     }
 
 
@@ -75,18 +87,20 @@ public class Travel
         var item = items[index]; 
         items.RemoveAt(index); 
         OnItemRemoved?.Invoke(item);
+
+        OnTravelChanged?.Invoke(this);
     }
 
     // Metodo que devuelve la lista de items ordenada por fecha de inicio.
     public List<TravelItem> GetItemsSortedByStartDate()
     {
-        return items.OrderBy(item => item.getStartDate()).ToList();
+        return items.OrderBy(item => item.ReservationNumber).ToList();
     }
 
     // Metodo busqueda de item via numero de reservacion.
     public TravelItem FindItemByReservationNumber(string reservationNumber)
     {
-        return items.FirstOrDefault(item => item.getReservationNumber() != null && item.getReservationNumber() == reservationNumber);
+        return items.FirstOrDefault(item => item.ReservationNumber != null && item.ReservationNumber ==  reservationNumber);
     }
 
     public override string ToString()

@@ -1,20 +1,112 @@
 ﻿using System.Text.Json;
+using Flightfy.DTOs;
 using Flightfy.Models;
 
 namespace Flightfy.Services
 {
     public static class FileManager
     {
+        static FileManager()
+        {
+            LoadConfig();
+        }
+
+        private static string ConfigFile = "Flightfy-Config.json";
+        private static string DefaultDirectory = AppContext.BaseDirectory;
+        private static Config config;
+
+        private static void LoadConfig()
+        {
+            if (File.Exists(ConfigFile))
+            {
+                string json = File.ReadAllText(ConfigFile);
+                config = JsonSerializer.Deserialize<Config>(json);
+            } else
+            {
+                config = new Config
+                {
+                    SavePath = DefaultDirectory
+                };
+                SaveConfig();
+            }
+        }
+
+        private static void SaveConfig()
+        {
+            string json = JsonSerializer.Serialize(config, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            File.WriteAllText(ConfigFile, json);
+        }
+
+        public static void SetPath(string path)
+        {
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+            config.SavePath = path;
+            SaveConfig();
+            Console.WriteLine($"Nueva ruta: {config.SavePath}");
+        }
+
+
         public static void SaveData(Travel travel)
         {
+            TravelDTO dto = new TravelDTO
+            {
+                Title = travel.Title,
+                Destination = travel.Destination,
+                StartDate = travel.StartDate,
+                EndDate = travel.EndDate,
+                Items = travel.Items.Select(item => new TravelItemDTO
+                {
+                    Name = item.Name,
+                    Description = item.Description,
+                    StartDate = item.StartDate,
+                    EndDate = item.EndDate,
+                    ReservationNumber = item.ReservationNumber,
+                }).ToList()
+            };
 
-            string json = JsonSerializer.Serialize(travel, new JsonSerializerOptions
+            string json = JsonSerializer.Serialize(dto, new JsonSerializerOptions
             {
                 WriteIndented = true
             });
 
-            File.WriteAllText("travel.json", json);
-            Console.WriteLine("Datos guardados correctamente en travel.json");
+            string filePath = Path.Combine(config.SavePath, "Flightfy-Data.json");
+
+            File.WriteAllText(filePath, json);
+        }
+
+        public static Travel LoadData()
+        {
+            string filePath = Path.Combine(config.SavePath, "Flightfy-Data.json");
+
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("No existe un registro de data. Crear un Travel");
+                return null;
+            }
+
+            string json = File.ReadAllText(filePath);
+            TravelDTO dto = JsonSerializer.Deserialize<TravelDTO>(json);
+
+            Travel travel = Travel.CreateTravel(dto.Title, dto.Destination, dto.StartDate, dto.EndDate);
+            foreach (var itemDto in dto.Items)
+            {
+                var item = new GenericTravelItem(
+                    itemDto.Name,
+                    itemDto.Description,
+                    itemDto.StartDate,
+                    itemDto.EndDate,
+                    itemDto.ReservationNumber
+                );
+
+                travel.AddItem(item);
+            }
+
+            Console.WriteLine("Voy a cargar los datos desde el archivo");
+            return travel;
         }
     }
-}
+}   

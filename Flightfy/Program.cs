@@ -3,8 +3,18 @@ using Flightfy.Services;
 
 User user1 = new User("Felipe", "Lucas", "felipeluca@gmail.com");
 
-// Para que un usuario pueda crear items, primero debe crear un viaje
+// Intentamos cargar el viaje desde el archivo
+Travel? travel = FileManager.LoadData();
 
-Travel.OnTravelCreated += FileManager.SaveData;
-Travel travel2 = user1.CreateTravel("Eurotrip", "Europa", new DateOnly(2025,05,23), new DateOnly(2025,06,23));
+if (travel != null)
+{
+    user1.SetTravel(travel);
+}
+else
+{
+    Travel.OnTravelCreated += FileManager.SaveData;
+    travel = user1.CreateTravel("Eurotrip", "Europa", new DateOnly(2025, 05, 23), new DateOnly(2025, 06, 23));
+}
+
+Travel.OnTravelChanged += FileManager.SaveData;
 user1.ManageTravel();

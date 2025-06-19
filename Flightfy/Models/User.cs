@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Flightfy.Exceptions;
+using Flightfy.Services;
 
 namespace Flightfy.Models;
 
@@ -17,7 +18,14 @@ public class User
         this.surname = surname;
         this.email = email;
     }
-    
+
+    public void SetTravel(Travel travel)
+    {
+        if (HasActiveTravel)
+            throw new TravelException("Ya existe un viaje activo", "ACTIVE_TRAVEL");
+        this.travel = travel;
+    }
+
     public bool HasActiveTravel => travel != null;
     
     public Travel? CreateTravel(string title, string destination, DateOnly startDate, DateOnly endDate)
@@ -65,7 +73,8 @@ public class User
         Console.WriteLine("4 - Imprimir detalles del Viaje");
         Console.WriteLine("5 - Eliminar item");
         Console.WriteLine("6 - Busqueda via numero de reserva");
-        Console.WriteLine("7 - Salir");
+        Console.WriteLine("7 - Cambiar ubicación del archivo json");
+        Console.WriteLine("8 - Salir");
 
 
         while (true)
@@ -210,13 +219,23 @@ public class User
                     Console.WriteLine(travel.FindItemByReservationNumber(reservationNumber));
                     break;
                 case 7:
+                    // Implementacion de una nueva opcion para el cambio de ubicacion y validamos que este exista.
+                    Console.WriteLine("Ingrese una nueva ubicación para el guardado de archivo:");
+                    string newPath = Console.ReadLine();
+
+                    if (!Directory.Exists(newPath))
+                        Console.WriteLine("La carpeta no existe! Se va a crear");
+
+                    // Setteamos la nueva ubicacion del archivo json
+                    FileManager.SetPath(newPath);
+                    break;
+                case 8:
                     Console.WriteLine("Gracias por usar el sistema!");
                     return;
                 default:
                     Console.WriteLine("Opcion Invalida");
                     break;
             }
-            
         }
     }
 

@@ -44,6 +44,23 @@ namespace Flightfy.Services
         {
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
+
+            string oldPath = config.SavePath;
+            string oldFile = Path.Combine(oldPath, "Flightfy-Data.json");
+            string newFile = Path.Combine(path, "Flightfy-Data.json");
+
+            if (File.Exists(oldFile))
+            {
+                try
+                {
+                    File.Move(oldFile, newFile, true);
+                    Console.WriteLine("Archivo trasladadao correctamente");
+                } catch (Exception ex)
+                {
+                    Console.WriteLine($"Error moviendo los archivos: {ex.Message}");
+                }
+            }
+
             config.SavePath = path;
             SaveConfig();
             Console.WriteLine($"Nueva ruta: {config.SavePath}");
@@ -77,6 +94,7 @@ namespace Flightfy.Services
 
             File.WriteAllText(filePath, json);
         }
+
 
         public static Travel LoadData()
         {

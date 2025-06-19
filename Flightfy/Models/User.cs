@@ -74,7 +74,8 @@ public class User
         Console.WriteLine("5 - Eliminar item");
         Console.WriteLine("6 - Busqueda via numero de reserva");
         Console.WriteLine("7 - Cambiar ubicación del archivo json");
-        Console.WriteLine("8 - Salir");
+        Console.WriteLine("8 - Restablecer data");
+        Console.WriteLine("9 - Salir");
 
 
         while (true)
@@ -230,6 +231,10 @@ public class User
                     FileManager.SetPath(newPath);
                     break;
                 case 8:
+                    Console.WriteLine("Eliminar data");
+                    // ejecutar metoodo de eliminación
+                    return;
+                case 9:
                     Console.WriteLine("Gracias por usar el sistema!");
                     return;
                 default:

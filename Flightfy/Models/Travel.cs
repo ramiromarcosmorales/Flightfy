@@ -1,13 +1,19 @@
+using System.Text.Json.Serialization;
 using Flightfy.Exceptions;
 
 namespace Flightfy.Models;
 
 public class Travel
 {
+    [JsonInclude]
     private String title;
+    [JsonInclude]
     private String destination;
+    [JsonInclude]
     private DateOnly startDate;
+    [JsonInclude]
     private DateOnly endDate;
+    [JsonInclude]
     private List<TravelItem> items; // Uso de Lista
 
     private Travel(String title, String destination, DateOnly startDate, DateOnly endDate)
@@ -19,9 +25,13 @@ public class Travel
         items = new List<TravelItem>();
     }
 
+    public static event TravelCreateHandler OnTravelCreated;
+
     public static Travel CreateTravel(String title, String destination, DateOnly startDate, DateOnly endDate)
     {
-        return new Travel(title, destination, startDate, endDate);
+        Travel travel = new Travel(title, destination, startDate, endDate);
+        OnTravelCreated?.Invoke(travel);
+        return travel;
     }
 
     public event TravelItemHandler OnItemAdded;

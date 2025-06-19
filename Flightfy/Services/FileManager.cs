@@ -95,7 +95,6 @@ namespace Flightfy.Services
             File.WriteAllText(filePath, json);
         }
 
-
         public static Travel LoadData()
         {
             string filePath = Path.Combine(config.SavePath, "Flightfy-Data.json");
@@ -125,6 +124,22 @@ namespace Flightfy.Services
 
             Console.WriteLine("Voy a cargar los datos desde el archivo");
             return travel;
+        }
+
+        public static void DeleteAllData()
+        {
+            string path = config.SavePath;
+            string file = Path.Combine(path, "Flightfy-Data.json");
+
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            config.SavePath = DefaultDirectory;
+            SaveConfig();
+            Console.WriteLine($"Ruta de guardado restaurada a: {config.SavePath}");
         }
     }
 }   

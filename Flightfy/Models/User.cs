@@ -232,7 +232,7 @@ public class User
                     break;
                 case 8:
                     Console.WriteLine("Eliminar data");
-                    // ejecutar metoodo de eliminación
+                    FileManager.DeleteAllData();
                     return;
                 case 9:
                     Console.WriteLine("Gracias por usar el sistema!");

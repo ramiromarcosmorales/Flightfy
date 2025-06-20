@@ -1,5 +1,6 @@
 ﻿namespace Flightfy.DTOs
 {
+    // Creacion de un DTO para deserializar el JSON de un viaje
     public class TravelDTO
     {
         public string Title { get; set; }

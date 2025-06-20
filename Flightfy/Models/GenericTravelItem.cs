@@ -1,5 +1,7 @@
 ﻿namespace Flightfy.Models
 {
+
+    // Creacion de un item de viaje generico para solucionar el problema de que no se puede deserializar un objeto abstracto
     public class GenericTravelItem : TravelItem
     {
         public GenericTravelItem(string name, string description, DateOnly startDate, DateOnly endDate, string reservationNumber) : base(name, description, startDate, endDate, reservationNumber)

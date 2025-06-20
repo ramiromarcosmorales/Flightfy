@@ -15,6 +15,7 @@ namespace Flightfy.Services
         private static string DefaultDirectory = AppContext.BaseDirectory;
         private static Config config;
 
+        // Metodo que se encarga de la logica de carga de la configuracion al iniciar la aplicacion.
         private static void LoadConfig()
         {
             if (File.Exists(ConfigFile))
@@ -31,6 +32,7 @@ namespace Flightfy.Services
             }
         }
 
+        // Metodo que se encarga de guardar la configuracion en un archivo JSON
         private static void SaveConfig()
         {
             string json = JsonSerializer.Serialize(config, new JsonSerializerOptions
@@ -40,6 +42,8 @@ namespace Flightfy.Services
             File.WriteAllText(ConfigFile, json);
         }
 
+
+        // Setter para cambiar la ruta de guardado de los datos
         public static void SetPath(string path)
         {
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
@@ -67,6 +71,7 @@ namespace Flightfy.Services
         }
 
 
+        // Metodo que se encarga de guardar los datos de un viaje en un archivo JSON
         public static void SaveData(Travel travel)
         {
             TravelDTO dto = new TravelDTO
@@ -95,6 +100,7 @@ namespace Flightfy.Services
             File.WriteAllText(filePath, json);
         }
 
+        // Metodo que se encarga de cargar los datos de un viaje desde un archivo JSON
         public static Travel LoadData()
         {
             string filePath = Path.Combine(config.SavePath, "Flightfy-Data.json");
@@ -126,6 +132,7 @@ namespace Flightfy.Services
             return travel;
         }
 
+        // Metodo que se encarga de eliminar todos los datos guardados en el archivo JSON y restaurar la ruta de guardado a la predeterminada
         public static void DeleteAllData()
         {
             string path = config.SavePath;
